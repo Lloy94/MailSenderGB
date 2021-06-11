@@ -11,6 +11,10 @@ namespace MailSender
     public class EmailSendService
     {
         public EmailSendService() { }
+
+        private ErrorMessage error= new();
+
+        private SuccessMessage success = new();
         public void Send() 
         {
 
@@ -33,10 +37,12 @@ namespace MailSender
             try
             {
                 client.Send(message);
-               // WpfMailSender.MessageBox.Show("Почта успешно отправлена", "Отправка почты", MessageBoxButton.OK, MessageBoxImage.Information);
+                success.ShowDialog();
             }
             catch (SmtpException smtp_exception)
             {
+                error.errorMsg.Text= smtp_exception.Message;
+                error.ShowDialog();
                 //MessageBox.Show(smtp_exception.Message, "Ошибка при отправке почты", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
