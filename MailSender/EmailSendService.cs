@@ -12,6 +12,10 @@ namespace MailSender
     {
         public EmailSendService() { }
 
+        public string subject;
+
+        public string body;
+
         private ErrorMessage error= new();
 
         private SuccessMessage success = new();
@@ -19,8 +23,8 @@ namespace MailSender
         {
 
             using var message = new MailMessage(MailSenderData.Sender, MailSenderData.Receiver);
-            message.Subject = "Тестовое сообщение от " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff");
-            message.Body = "Тело тестового сообщения " + DateTime.Now.ToString("F");
+            message.Subject = subject;
+            message.Body = body;
 
             //message.Attachments.Add(new Attachment());
 

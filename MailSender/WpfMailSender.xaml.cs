@@ -36,6 +36,8 @@ namespace MailSender
         {
             UserName = LoginEdit.Text;
             SecurePassword = PasswordEdit.SecurePassword;
+            send.subject = subjectBox.Text;
+            send.body = bodyBox.Text;
             send.Send();
             
         }
