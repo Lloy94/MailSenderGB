@@ -28,13 +28,13 @@ namespace MailSender
         }
         private void SendButton_OnClick(object sender, RoutedEventArgs e)
         {
-            using var message = new MailMessage("mcdos14@yandex.ru", "mcdos1485@gmail.com");
+            using var message = new MailMessage(MailSenderData.Sender,MailSenderData.Receiver);
             message.Subject = "Тестовое сообщение от " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff");
             message.Body = "Тело тестового сообщения " + DateTime.Now.ToString("F");
 
             //message.Attachments.Add(new Attachment());
 
-            using var client = new SmtpClient("smtp.yandex.ru", 25)
+            using var client = new SmtpClient(MailSenderData.SmtpServer, MailSenderData.SmtpPort)
             {
                 EnableSsl = true,
                 Credentials = new NetworkCredential

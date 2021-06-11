@@ -9,5 +9,11 @@ namespace MailSender
     public static class MailSenderData
     {
         public static string Sender = "Mcdos14@yandex.ru";
+
+        public static string Receiver = "mcdos1485@gmail.com";
+
+        public static string SmtpServer = "smtp.yandex.ru";
+
+        public static int SmtpPort = 25;
     }
 }
