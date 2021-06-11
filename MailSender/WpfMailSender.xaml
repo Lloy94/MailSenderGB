@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Рассыльщик почты" Height="450" Width="800">
     <Grid>
         <Button Content="Отправить" Margin="342,296,342,95" Click="SendButton_OnClick"/>
         <TextBlock Margin="156,143,0,0" Text="Имя пользователя" HorizontalAlignment="Left" VerticalAlignment="Top"/>

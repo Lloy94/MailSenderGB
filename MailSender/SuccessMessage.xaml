@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="SuccessMessage" Height="200" Width="400">
+        Title="Успех" Height="200" Width="400">
     <Grid>
         <TextBlock Text="Успешно" TextWrapping="Wrap" VerticalAlignment="Top" Height="62" Margin="0,61,0,0" HorizontalAlignment="Center" Width="176" TextAlignment="Center" FontSize="20"/>
     </Grid>

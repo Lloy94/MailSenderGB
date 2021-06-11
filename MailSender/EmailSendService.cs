@@ -16,9 +16,9 @@ namespace MailSender
 
         public string body;
 
-        private ErrorMessage error= new();
+        private ErrorMessage error;
 
-        private SuccessMessage success = new();
+        private SuccessMessage success;
         public void Send() 
         {
 
@@ -41,10 +41,12 @@ namespace MailSender
             try
             {
                 client.Send(message);
+                success = new();
                 success.ShowDialog();
             }
             catch (SmtpException smtp_exception)
             {
+                error = new();
                 error.errorMsg.Text= smtp_exception.Message;
                 error.ShowDialog();
                 //MessageBox.Show(smtp_exception.Message, "Ошибка при отправке почты", MessageBoxButton.OK, MessageBoxImage.Error);

@@ -8,7 +8,7 @@ namespace MailSender
 {
     public static class MailSenderData
     {
-        public static string Sender = "Mcdos14@yandex.ru";
+        public static string Sender = "mcdos14@yandex.ru";
 
         public static string Receiver = "mcdos1485@gmail.com";
 

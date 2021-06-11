@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="ErrorMessage" Height="200" Width="400">
+        Title="Ошибка" Height="200" Width="400">
     <Grid>
         <TextBlock x:Name="errorMsg" HorizontalAlignment="Center"  TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center" FontSize="20" Foreground="#FFF11F1F"/>
         <Button Content="OK" HorizontalAlignment="Left" Margin="175,128,0,0" VerticalAlignment="Top" Click="Button_Click"/>
