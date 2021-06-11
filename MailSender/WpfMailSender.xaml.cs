@@ -28,7 +28,7 @@ namespace MailSender
         }
         private void SendButton_OnClick(object sender, RoutedEventArgs e)
         {
-            using var message = new MailMessage("shmachilin@yandex.ru", "shmachilin@gmail.com");
+            using var message = new MailMessage("mcdos14@yandex.ru", "mcdos1485@gmail.com");
             message.Subject = "Тестовое сообщение от " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff");
             message.Body = "Тело тестового сообщения " + DateTime.Now.ToString("F");
 
