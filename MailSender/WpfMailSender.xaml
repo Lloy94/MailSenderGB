@@ -5,12 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MailSender"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Рассыльщик почты" Height="450" Width="800">
     <Grid>
         <Button Content="Отправить" Margin="342,296,342,95" Click="SendButton_OnClick"/>
         <TextBlock Margin="156,143,0,0" Text="Имя пользователя" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label Content="Пароль" Margin="0,136,186,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <TextBox Name="LoginEdit" Margin="62,185,0,0" Text="User name" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="269"/>
         <PasswordBox x:Name="PasswordEdit" Margin="0,185,80,0" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" Width="318"/>
+        <TextBox x:Name="subjectBox" HorizontalAlignment="Left" Margin="87,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="153" Height="94"/>
+        <TextBox x:Name="bodyBox" HorizontalAlignment="Left" Margin="588,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="94"/>
+        <TextBlock HorizontalAlignment="Left" Margin="131,257,0,0" Text="Заголовок письма" TextWrapping="Wrap" VerticalAlignment="Top" Height="24"/>
+        <TextBlock HorizontalAlignment="Left" Margin="632,257,0,0" Text="Письмо" TextWrapping="Wrap" VerticalAlignment="Top" Height="24"/>
     </Grid>
 </Window>
