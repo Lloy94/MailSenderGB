@@ -81,5 +81,29 @@ namespace MailSender
         {
             tbMain.SelectedIndex = 1;
         }
+
+        private void sendMsg_Click(object sender, RoutedEventArgs e)
+        {
+
+            using var message = new MailMessage(Data.TestData.Senders[SendersList.SelectedIndex].Address, Data.TestData.Recipients[RecepientList.SelectedIndex].Address);
+
+            using var client = new SmtpClient(ServersList.SelectedItem.ToString());
+            client.EnableSsl = true;
+            client.Credentials = new NetworkCredential
+            {
+                UserName = "",
+                Password = ""
+            };
+
+            try
+            {
+                client.Send(message);
+                MessageBox.Show("Почта успешно отправлена", "Отправка почты", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (SmtpException smtp_exception)
+            {
+                MessageBox.Show(smtp_exception.Message, "Ошибка при отправке почты", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }
