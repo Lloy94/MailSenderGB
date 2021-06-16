@@ -56,6 +56,8 @@ namespace MailSender
         private void SenderAdd_Click(object sender, RoutedEventArgs e)
         {
             Data.TestData.Senders.Add(new Models.Sender());
+            SendersList.ItemsSource = null;
+            SendersList.ItemsSource = Data.TestData.Senders;
         }
 
         private void SenderDelete_Click(object sender, RoutedEventArgs e)
@@ -68,6 +70,8 @@ namespace MailSender
         private void RecipientAdd_Click(object sender, RoutedEventArgs e)
         {
             Data.TestData.Recipients.Add(new Models.Recipient());
+            RecepientList.ItemsSource = null;
+            RecepientList.ItemsSource = Data.TestData.Recipients;
         }
 
         private void RecepientRemove_Click(object sender, RoutedEventArgs e)

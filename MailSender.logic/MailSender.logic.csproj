@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+	<RootNamespace>MailSender</RootNamespace>
+	<LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+</Project>
