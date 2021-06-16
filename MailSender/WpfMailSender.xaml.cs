@@ -90,7 +90,8 @@ namespace MailSender
         {
 
             using var message = new MailMessage(Data.TestData.Senders[SendersList.SelectedIndex].Address, Data.TestData.Recipients[RecepientList.SelectedIndex].Address);
-
+            message.Subject = mailSubject.Text;
+            message.Body = mailBody.Text;
             using var client = new SmtpClient(ServersList.SelectedItem.ToString());
             client.EnableSsl = true;
             client.Credentials = new NetworkCredential

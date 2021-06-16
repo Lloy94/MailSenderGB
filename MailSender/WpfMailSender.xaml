@@ -250,10 +250,10 @@
                     <GroupBox Grid.Column="1" Header="Редактор">
                         <DockPanel>
                             <GroupBox Header="Заголовок" DockPanel.Dock="Top">
-                                <TextBox Text="{Binding SelectedItem.Title, ElementName=MessageList}"/>
+                                <TextBox x:Name="mailSubject" Text="{Binding SelectedItem.Title, ElementName=MessageList}"/>
                             </GroupBox>
                             <GroupBox Header="Текст письма">
-                                <TextBox AcceptsReturn="True" AcceptsTab="True"
+                                <TextBox x:Name="mailBody" AcceptsReturn="True" AcceptsTab="True"
                                          Text="{Binding SelectedItem.Text, ElementName=MessageList}"/>
                             </GroupBox>
                         </DockPanel>
