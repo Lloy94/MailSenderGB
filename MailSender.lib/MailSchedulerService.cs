@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MailSender
 {
-    public class DbService
+    public class MailSchedulerService
     {
     }
 }

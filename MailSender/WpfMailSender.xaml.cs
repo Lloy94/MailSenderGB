@@ -21,25 +21,22 @@ namespace MailSender
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class WpfMailSender : Window
+    public partial class WpfMailSender
     {
-        public static string UserName;
 
-        public static SecureString SecurePassword;
 
-        private EmailSendService send = new();
         public WpfMailSender()
         {
             InitializeComponent();
+            //ServersList.ItemsSource = TestData.Servers;
         }
-        private void SendButton_OnClick(object sender, RoutedEventArgs e)
+
+        private void Exit_OnClick(object Sender, RoutedEventArgs E)
         {
-            UserName = LoginEdit.Text;
-            SecurePassword = PasswordEdit.SecurePassword;
-            send.subject = subjectBox.Text;
-            send.body = bodyBox.Text;
-            send.Send();
-            
+            Close();
         }
+
+        private void About_OnClick(object Sender, RoutedEventArgs E) =>
+                MessageBox.Show("Рассыльщик почты", "О программе", MessageBoxButton.OK);
     }
 }

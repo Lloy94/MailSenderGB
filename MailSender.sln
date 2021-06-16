@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSender", "MailSender\MailSender.csproj", "{53A5AFB6-5FA4-45B7-B1D5-01C1A13392A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59086667-77EF-4310-9A07-469604AE01E7} = {59086667-77EF-4310-9A07-469604AE01E7}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSender.lib", "MailSender.lib\MailSender.lib.csproj", "{59086667-77EF-4310-9A07-469604AE01E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSender.lib", "MailSender.lib\MailSender.lib.csproj", "{59086667-77EF-4310-9A07-469604AE01E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
