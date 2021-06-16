@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace MailSender.Data
                UseSSL = i % 2 == 0
            })
            .ToList();
+
 
         public static List<Sender> Senders { get; } = Enumerable.Range(1, 10)
            .Select(i => new Sender

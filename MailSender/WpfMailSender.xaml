@@ -27,7 +27,7 @@
                 <TextBlock Text="Готов!"/>
             </StatusBarItem>
         </StatusBar>
-        <TabControl>
+        <TabControl x:Name="tbMain">
             <TabItem Header="Списки">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -40,16 +40,16 @@
                             <ComboBox Width="120" SelectedIndex="0" Name="ServersList"
                                       ItemsSource="{x:Static data:TestData.Servers}"
                                       DisplayMemberPath="Name"/>
-                            <Button>
+                            <Button x:Name="ServerAdd" Click="ServerAdd_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Height="20" Source="Media/add.png" Margin="0,0,3,0"/>
                                     <TextBlock Text="Добавить"/>
                                 </StackPanel>
                             </Button>
-                            <Button ToolTip="Редактирование">
+                            <Button x:Name="ServerUpdate" ToolTip="Редактирование">
                                 <Image Height="20" Source="Media/edit.png"/>
                             </Button>
-                            <Button>
+                            <Button x:Name="ServerDelete" Click="ServerDelete_Click">
                                 <Button.ToolTip>
                                     <StackPanel>
                                         <TextBlock Text="Строка 1"/>
@@ -62,7 +62,7 @@
                         </ToolBar>
                         <ToolBar Band="1" BandIndex="0">
                             <Label Content="Отправители"/>
-                            <ComboBox Width="120" SelectedIndex="0" ItemsSource="{x:Static data:TestData.Senders}">
+                            <ComboBox x:Name="SendersList" Width="120" SelectedIndex="0" ItemsSource="{x:Static data:TestData.Senders}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type model:Sender}">
                                         <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
@@ -72,7 +72,7 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button>
+                            <Button x:Name="SenderAdd" Click="SenderAdd_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Height="12" Icon="Solid_PlusCircle"
                                                      Margin="0,0,3,0">
@@ -89,15 +89,15 @@
                             <Button fa:Awesome.Content="Regular_Edit" 
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"/>
-                            <Button fa:Awesome.Content="Solid_TrashAlt" 
+                            <Button x:Name="SenderDelete" fa:Awesome.Content="Solid_TrashAlt" 
                                     Foreground="Red"
-                                    ToolTip="Удаление"/>
+                                    ToolTip="Удаление" Click="SenderDelete_Click"/>
                         </ToolBar>
-                        <ToolBar Header="Планировщик">
-                            <Button fa:Awesome.Content="Solid_BusinessTime"/>
+                        <ToolBar x:Name="Sheduler" Header="Планировщик">
+                            <Button x:Name="Shedule" fa:Awesome.Content="Solid_BusinessTime" Click="Shedule_Click"/>
                         </ToolBar>
                         <ToolBar Header="Получатели" Band="1" BandIndex="1">
-                            <Button>
+                            <Button x:Name="RecipientAdd" Click="RecipientAdd_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Height="12" Icon="Solid_PlusCircle"
                                                      Margin="0,0,3,0"
@@ -108,12 +108,12 @@
                             <Button fa:Awesome.Content="Regular_Edit" 
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"/>
-                            <Button fa:Awesome.Content="Solid_TrashAlt" 
+                            <Button x:Name="RecepientRemove" fa:Awesome.Content="Solid_TrashAlt" 
                                     Foreground="Red"
-                                    ToolTip="Удаление"/>
+                                    ToolTip="Удаление" Click="RecepientRemove_Click"/>
                         </ToolBar>
                     </ToolBarTray>
-                    <DataGrid Grid.Row="1" AutoGenerateColumns="False"
+                    <DataGrid x:Name="RecepientList" Grid.Row="1" AutoGenerateColumns="False"
                               ItemsSource="{x:Static data:TestData.Recipients}"
                               GridLinesVisibility="Vertical"
                               VerticalGridLinesBrush="Gray"
