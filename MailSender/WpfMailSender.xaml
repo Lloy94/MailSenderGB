@@ -243,7 +243,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Письма">
-                        <ListBox ItemsSource="{x:Static data:TestData.Messages}"
+                        <ListBox ItemsSource="{Binding Messages}"
                                  Name="MessageList">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>

@@ -18,7 +18,7 @@ namespace MailSender.Services
                 {
                     Id = i,
                     Name = $"Получатель - {i}",
-                    Address = $"sender-{i}@server.ru",
+                    Address = $"recipient-{i}@server.ru",
                     Description = $"Описание получателя {i}",
                 };
                 Add(recipient);

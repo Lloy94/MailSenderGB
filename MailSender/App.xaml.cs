@@ -33,6 +33,7 @@ namespace MailSender
             services.AddSingleton<ServersRepository>();
             services.AddSingleton<SendersRepository>();
             services.AddSingleton<RecipientsRepository>();
+            services.AddSingleton<MessagesRepository>();
 
             services.AddSingleton<IStatistic, InMemoryStatisticService>();
             services.AddSingleton<IMailService, DebugMailService>();

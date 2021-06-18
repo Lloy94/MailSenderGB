@@ -136,6 +136,8 @@ namespace MailSender.ViewModels
         {
             Recipients.Remove(Recipient);
         }
+
+        public static MessagesRepository Messages { get; } = new();
         #region Command SendMessageCommand - Отправка почты
 
         /// <summary>Отправка почты</summary>
