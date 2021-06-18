@@ -113,6 +113,29 @@ namespace MailSender.ViewModels
             Senders.Remove(Sender);
         }
 
+        public static RecipientsRepository Recipients { get; } = new();
+
+        public static Recipient Recipient { get; set; }
+
+        private ICommand _AddRecipientCommand;
+
+        public ICommand AddRecipientCommand => _AddRecipientCommand
+            ??= new LambdaCommand(OnAddRecipientCommandExecuted);
+
+        private static void OnAddRecipientCommandExecuted(object _)
+        {
+            Recipients.Add(new Recipient());
+        }
+
+        private ICommand _RemoveRecipientCommand;
+
+        public ICommand RemoveRecipientCommand => _RemoveRecipientCommand
+            ??= new LambdaCommand(OnRemoveRecipientCommandExecuted);
+
+        private static void OnRemoveRecipientCommandExecuted(object _)
+        {
+            Recipients.Remove(Recipient);
+        }
         #region Command SendMessageCommand - Отправка почты
 
         /// <summary>Отправка почты</summary>

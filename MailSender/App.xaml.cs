@@ -32,6 +32,7 @@ namespace MailSender
             services.AddTransient<MainWindowViewModel>();
             services.AddSingleton<ServersRepository>();
             services.AddSingleton<SendersRepository>();
+            services.AddSingleton<RecipientsRepository>();
 
             services.AddSingleton<IStatistic, InMemoryStatisticService>();
             services.AddSingleton<IMailService, DebugMailService>();

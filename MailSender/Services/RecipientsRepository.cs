@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,24 +8,22 @@ using MailSender.Models;
 
 namespace MailSender.Services
 {
-    public class RecipientsRepository
+    public class RecipientsRepository : ObservableCollection<Recipient>
     {
-        private List<Recipient> _Recipients;
-
-        public RecipientsRepository()
+        public RecipientsRepository() : base ()
         {
-            _Recipients = Enumerable.Range(1, 10)
-               .Select(i => new Recipient
-               {
-                   Id = i,
-                   Name = $"Получатель - {i}",
-                   Address = $"sender-{i}@server.ru",
-                   Description = $"Описание получателя {i}",
-               })
-               .ToList();
+            for (int i = 0; i < 10; i++)
+            {
+                var recipient = new Recipient
+                {
+                    Id = i,
+                    Name = $"Получатель - {i}",
+                    Address = $"sender-{i}@server.ru",
+                    Description = $"Описание получателя {i}",
+                };
+                Add(recipient);
+            }
         }
-
-        public IEnumerable<Recipient> GetAll() => _Recipients;
 
         public Recipient Create(int Id, string Name, string Address, string Description)
         {
@@ -38,16 +37,7 @@ namespace MailSender.Services
             Add(recipient);
             return recipient;
         }
-
-        public void Add(Recipient recipient)
-        {
-            _Recipients.Add(recipient);
-        }
-
-        public void Remove(Recipient recipient)
-        {
-            _Recipients.Remove(recipient);
-        }
+      
     }
 }
 

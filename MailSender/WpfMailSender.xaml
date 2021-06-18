@@ -111,13 +111,16 @@
                             <Button fa:Awesome.Content="Regular_Edit" 
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"/>
-                            <Button fa:Awesome.Content="Solid_TrashAlt" 
+                            <Button Command="{Binding RemoveRecipientCommand}"
+                                    CommandParameter="{Binding Path= Recipient}"
+                                    fa:Awesome.Content="Solid_TrashAlt" 
                                     Foreground="Red"
                                     ToolTip="Удаление"/>
                         </ToolBar>
                     </ToolBarTray>
                     <DataGrid Grid.Row="1" AutoGenerateColumns="False"
-                              ItemsSource="{x:Static data:TestData.Recipients}"
+                              ItemsSource="{Binding Recipients}"
+                              SelectedItem="{Binding Recipient}"
                               GridLinesVisibility="Vertical"
                               VerticalGridLinesBrush="Gray"
                               AlternatingRowBackground="#4C87CEAB"
