@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using MailSender.Models;
 
 namespace MailSender.Data
@@ -28,7 +23,7 @@ namespace MailSender.Data
            {
                Id = i,
                Name = $"Отправитель - {i}",
-               Address = new MailAddress($"sender-{i}@server.ru"),
+               Address =$"sender-{i}@server.ru",
                Description = $"Описание отправителя {i}",
            })
            .ToList();
@@ -38,7 +33,7 @@ namespace MailSender.Data
            {
                Id = i,
                Name = $"Получатель - {i}",
-               Address = new MailAddress($"sender-{i}@server.ru"),
+               Address = $"sender-{i}@server.ru",
                Description = $"Описание получателя {i}"
            })
            .ToList();
