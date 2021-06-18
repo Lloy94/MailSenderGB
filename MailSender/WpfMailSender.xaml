@@ -244,6 +244,7 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Письма">
                         <ListBox ItemsSource="{Binding Messages}"
+                                 SelectedItem="{Binding Message}"
                                  Name="MessageList">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>

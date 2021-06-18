@@ -117,6 +117,8 @@ namespace MailSender.ViewModels
 
         public static Recipient Recipient { get; set; }
 
+        public Message Message { get; set; }
+
         private ICommand _AddRecipientCommand;
 
         public ICommand AddRecipientCommand => _AddRecipientCommand
@@ -150,7 +152,7 @@ namespace MailSender.ViewModels
         /// <summary>Логика выполнения - Отправка почты</summary>
         private void OnSendMessageCommandExecuted(object p)
         {
-            _MailService.SendEmail("Отправитель", "Получатель", "Тема", "Тело письма");
+            _MailService.SendEmail(Sender, Recipient, Message, Server);
         }
 
         #endregion
