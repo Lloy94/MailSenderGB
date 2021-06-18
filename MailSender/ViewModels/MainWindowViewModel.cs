@@ -89,6 +89,30 @@ namespace MailSender.ViewModels
 
         public static ServersRepository Servers { get; } = new();
 
+        public static SendersRepository Senders { get; } = new();
+
+        public static Sender Sender { get; set; }
+
+        private ICommand _AddSenderCommand;
+
+        public ICommand AddSenderCommand => _AddSenderCommand
+            ??= new LambdaCommand(OnAddSenderCommandExecuted);
+
+        private static void OnAddSenderCommandExecuted(object _)
+        {
+            Senders.Add(new Sender());
+        }
+
+        private ICommand _RemoveSenderCommand;
+
+        public ICommand RemoveSenderCommand => _RemoveSenderCommand
+            ??= new LambdaCommand(OnRemoveSenderCommandExecuted);
+
+        private static void OnRemoveSenderCommandExecuted(object _)
+        {
+            Senders.Remove(Sender);
+        }
+
         #region Command SendMessageCommand - Отправка почты
 
         /// <summary>Отправка почты</summary>

@@ -62,7 +62,8 @@
                         </ToolBar>
                         <ToolBar Band="1" BandIndex="0">
                             <Label Content="Отправители"/>
-                            <ComboBox Width="120" SelectedIndex="0" ItemsSource="{x:Static data:TestData.Senders}">
+                            <ComboBox Width="120" SelectedIndex="0" ItemsSource="{Binding Senders}"
+                                      SelectedItem="{Binding Sender}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type model:Sender}">
                                         <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
@@ -72,7 +73,7 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button>
+                            <Button Command="{Binding AddSenderCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Height="12" Icon="Solid_PlusCircle"
                                                      Margin="0,0,3,0">
@@ -89,7 +90,9 @@
                             <Button fa:Awesome.Content="Regular_Edit" 
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"/>
-                            <Button fa:Awesome.Content="Solid_TrashAlt" 
+                            <Button Command="{Binding RemoveSenderCommand}"
+                                    CommandParameter="{Binding Path= Sender}"
+                                    fa:Awesome.Content="Solid_TrashAlt" 
                                     Foreground="Red"
                                     ToolTip="Удаление"/>
                         </ToolBar>
