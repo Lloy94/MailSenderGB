@@ -21,25 +21,94 @@ namespace MailSender
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class WpfMailSender : Window
+    public partial class WpfMailSender
     {
-        public static string UserName;
 
-        public static SecureString SecurePassword;
 
-        private EmailSendService send = new();
         public WpfMailSender()
         {
             InitializeComponent();
+            //ServersList.ItemsSource = TestData.Servers;
         }
-        private void SendButton_OnClick(object sender, RoutedEventArgs e)
+
+        private void Exit_OnClick(object Sender, RoutedEventArgs E)
         {
-            UserName = LoginEdit.Text;
-            SecurePassword = PasswordEdit.SecurePassword;
-            send.subject = subjectBox.Text;
-            send.body = bodyBox.Text;
-            send.Send();
-            
+            Close();
+        }
+
+        private void About_OnClick(object Sender, RoutedEventArgs E) =>
+                MessageBox.Show("Рассыльщик почты", "О программе", MessageBoxButton.OK);
+
+        private void ServerAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Data.TestData.Servers.Add(new Models.Server());
+            ServersList.ItemsSource = null;
+            ServersList.ItemsSource = Data.TestData.Servers;
+        }
+
+        private void ServerDelete_Click(object sender, RoutedEventArgs e)
+        {
+            Data.TestData.Servers.RemoveAt(ServersList.SelectedIndex);
+            ServersList.ItemsSource = null;
+            ServersList.ItemsSource = Data.TestData.Servers;
+        }
+
+        private void SenderAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Data.TestData.Senders.Add(new Models.Sender());
+            SendersList.ItemsSource = null;
+            SendersList.ItemsSource = Data.TestData.Senders;
+        }
+
+        private void SenderDelete_Click(object sender, RoutedEventArgs e)
+        {
+            Data.TestData.Senders.RemoveAt(SendersList.SelectedIndex);
+            SendersList.ItemsSource = null;
+            SendersList.ItemsSource = Data.TestData.Senders;
+        }
+
+        private void RecipientAdd_Click(object sender, RoutedEventArgs e)
+        {
+            Data.TestData.Recipients.Add(new Models.Recipient());
+            RecepientList.ItemsSource = null;
+            RecepientList.ItemsSource = Data.TestData.Recipients;
+        }
+
+        private void RecepientRemove_Click(object sender, RoutedEventArgs e)
+        {
+            Data.TestData.Recipients.RemoveAt(RecepientList.SelectedIndex);
+            RecepientList.ItemsSource = null;
+            RecepientList.ItemsSource = Data.TestData.Recipients;
+        }
+
+        private void Shedule_Click(object sender, RoutedEventArgs e)
+        {
+            tbMain.SelectedIndex = 1;
+        }
+
+        private void sendMsg_Click(object sender, RoutedEventArgs e)
+        {
+
+            using var message = new MailMessage(Data.TestData.Senders[SendersList.SelectedIndex].Address, Data.TestData.Recipients[RecepientList.SelectedIndex].Address);
+            message.Subject = mailSubject.Text;
+            message.Body = mailBody.Text;
+            using var client = new SmtpClient(ServersList.SelectedItem.ToString());
+            client.EnableSsl = true;
+            client.Credentials = new NetworkCredential
+            {
+                UserName = "",
+                Password = ""
+            };
+
+            try
+            {
+                client.Send(message);
+                MessageBox.Show("Почта успешно отправлена", "Отправка почты", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (SmtpException smtp_exception)
+            {
+                MessageBox.Show(smtp_exception.Message, "Ошибка при отправке почты", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
