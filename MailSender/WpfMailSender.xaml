@@ -37,20 +37,19 @@
                     <ToolBarTray Grid.Row="0">
                         <ToolBar>
                             <Label Content="Сервера" Margin="0,0,25,0"/>
-                            <ComboBox Width="120" SelectedIndex="0"
+                            <ComboBox x:Name="cbServers" Width="120" SelectedIndex="0"
                                       ItemsSource="{Binding Servers}"
-                                      DisplayMemberPath="Name"/>
-                            <Button fa:Awesome.Content="Solid_Download" Command="{Binding LoadServersCommand}"/>
-                            <Button>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Height="20" Source="Media/add.png" Margin="0,0,3,0"/>
-                                    <TextBlock Text="Добавить"/>
-                                </StackPanel>
+                                      SelectedItem="{Binding Server}"
+                                      DisplayMemberPath="Name" />
+                            <Button ToolTip="Добавление"
+                                Command="{Binding AddServerCommand}">
+                                <Image Height="20" Source="Media/add.png"/>
                             </Button>
                             <Button ToolTip="Редактирование">
                                 <Image Height="20" Source="Media/edit.png"/>
                             </Button>
-                            <Button>
+                            <Button Command="{Binding RemoveServerCommand}"
+                                    CommandParameter="{Binding Path= Server}">
                                 <Button.ToolTip>
                                     <StackPanel>
                                         <TextBlock Text="Строка 1"/>

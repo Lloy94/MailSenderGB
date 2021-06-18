@@ -65,26 +65,29 @@ namespace MailSender.ViewModels
             MessageBox.Show("Рассыльщик почты", "О программе");
         }
 
-        public ObservableCollection<Server> Servers { get; } = new();
+        private ICommand _AddServerCommand;
 
-        #region Command LoadServersCommand - Загрузка серверов
+        public ICommand AddServerCommand => _AddServerCommand
+            ??= new LambdaCommand(OnAddServerCommandExecuted);
 
-        /// <summary>Загрузка серверов</summary>
-        private LambdaCommand _LoadServersCommand;
-
-        /// <summary>Загрузка серверов</summary>
-        public ICommand LoadServersCommand => _LoadServersCommand
-            ??= new(OnLoadServersCommandExecuted);
-
-        /// <summary>Логика выполнения - Загрузка серверов</summary>
-        private void OnLoadServersCommandExecuted(object p)
+        private static void OnAddServerCommandExecuted(object _)
         {
-            Servers.Clear();
-            foreach (var server in _ServersRepository.GetAll())
-                Servers.Add(server);
+            Servers.Add(new Server());
         }
 
-        #endregion
+        private ICommand _RemoveServerCommand;
+
+        public ICommand RemoveServerCommand => _RemoveServerCommand
+            ??= new LambdaCommand(OnRemoveServerCommandExecuted);
+
+        private static void OnRemoveServerCommandExecuted(object _)
+        {
+             Servers.Remove(Server);
+        }
+
+        public static Server Server { get; set; }
+
+        public static ServersRepository Servers { get; } = new();
 
         #region Command SendMessageCommand - Отправка почты
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,25 +8,24 @@ using MailSender.Models;
 
 namespace MailSender.Services
 {
-    public class ServersRepository
+    public class ServersRepository : ObservableCollection<Server>
     {
-        private List<Server> _Servers;
 
-        public ServersRepository()
+        public ServersRepository() : base()
         {
-            _Servers = Enumerable.Range(1, 10)
-               .Select(i => new Server
-               {
-                   Name = $"Сервер {i}",
-                   Address = $"smtp.server-{i}.ru",
-                   Login = $"User-{i}",
-                   Password = $"Password - {i}",
-                   UseSSL = i % 2 == 0
-               })
-               .ToList();
+            for (int i =0; i<10; i++)
+            {
+                var server = new Server
+                {
+                    Name = $"Сервер {i}",
+                    Address = $"smtp.server-{i}.ru",
+                    Login = $"User-{i}",
+                    Password = $"Password - {i}",
+                    UseSSL = i % 2 == 0
+                };
+                Add(server);
+            }
         }
-
-        public IEnumerable<Server> GetAll() => _Servers;
 
         public Server Create(string Name, string Address, int Port, bool UseSSL, string Login, string Password)
         {
@@ -42,14 +42,5 @@ namespace MailSender.Services
             return server;
         }
 
-        public void Add(Server server)
-        {
-            _Servers.Add(server);
-        }
-
-        public void Remove(Server server)
-        {
-            _Servers.Remove(server);
-        }
     }
 }
