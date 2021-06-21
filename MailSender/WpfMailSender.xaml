@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:l="clr-namespace:MailSender"
         xmlns:data="clr-namespace:MailSender.Data"
         xmlns:model="clr-namespace:MailSender.Models;assembly=MailSender.lib"
@@ -14,6 +15,9 @@
         <Menu>
             <MenuItem Header="Файл">
                 <MenuItem Header="Выход" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Данные">
+            <MenuItem Header="Загрузка" Command="{Binding LoadDataCommand}"/>
             </MenuItem>
             <MenuItem Header="Справка">
                 <MenuItem Header="О программе" Command="{Binding AboutCommand}"/>
@@ -39,7 +43,7 @@
                             <Label Content="Сервера" Margin="0,0,25,0"/>
                             <ComboBox x:Name="cbServers" Width="120" SelectedIndex="0"
                                       ItemsSource="{Binding Servers}"
-                                      SelectedItem="{Binding Server}"
+                                      SelectedItem="{Binding SelectedServer}"
                                       DisplayMemberPath="Name" />
                             <Button ToolTip="Добавление"
                                 Command="{Binding AddServerCommand}">
@@ -49,7 +53,7 @@
                                 <Image Height="20" Source="Media/edit.png"/>
                             </Button>
                             <Button Command="{Binding RemoveServerCommand}"
-                                    CommandParameter="{Binding Path= Server}">
+                                    CommandParameter="{Binding Path= SelectedServer}">
                                 <Button.ToolTip>
                                     <StackPanel>
                                         <TextBlock Text="Строка 1"/>
@@ -63,7 +67,7 @@
                         <ToolBar Band="1" BandIndex="0">
                             <Label Content="Отправители"/>
                             <ComboBox Width="120" SelectedIndex="0" ItemsSource="{Binding Senders}"
-                                      SelectedItem="{Binding Sender}">
+                                      SelectedItem="{Binding SelectedSender}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type model:Sender}">
                                         <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
@@ -91,7 +95,7 @@
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"/>
                             <Button Command="{Binding RemoveSenderCommand}"
-                                    CommandParameter="{Binding Path= Sender}"
+                                    CommandParameter="{Binding Path= SelectedSender}"
                                     fa:Awesome.Content="Solid_TrashAlt" 
                                     Foreground="Red"
                                     ToolTip="Удаление"/>
@@ -100,7 +104,8 @@
                             <Button fa:Awesome.Content="Solid_BusinessTime"/>
                         </ToolBar>
                         <ToolBar Header="Получатели" Band="1" BandIndex="1">
-                            <Button>
+                            <Button Command="{Binding AddRecipientCommand}"
+                                    CommandParameter="{Binding Path= Recipient}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Height="12" Icon="Solid_PlusCircle"
                                                      Margin="0,0,3,0"
@@ -112,7 +117,7 @@
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"/>
                             <Button Command="{Binding RemoveRecipientCommand}"
-                                    CommandParameter="{Binding Path= Recipient}"
+                                    CommandParameter="{Binding Path= SelectedRecipient}"
                                     fa:Awesome.Content="Solid_TrashAlt" 
                                     Foreground="Red"
                                     ToolTip="Удаление"/>
@@ -120,7 +125,7 @@
                     </ToolBarTray>
                     <DataGrid Grid.Row="1" AutoGenerateColumns="False"
                               ItemsSource="{Binding Recipients}"
-                              SelectedItem="{Binding Recipient}"
+                              SelectedItem="{Binding SelectedRecipient}"
                               GridLinesVisibility="Vertical"
                               VerticalGridLinesBrush="Gray"
                               AlternatingRowBackground="#4C87CEAB"
@@ -244,7 +249,7 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Письма">
                         <ListBox ItemsSource="{Binding Messages}"
-                                 SelectedItem="{Binding Message}"
+                                 SelectedItem="{Binding SelectedMessage}"
                                  Name="MessageList">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>

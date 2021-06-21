@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using MailSender.Commands;
 using MailSender.Interfaces;
@@ -10,16 +11,25 @@ namespace MailSender.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
-        private readonly ServersRepository _ServersRepository;
+        private readonly IRepository<Server> _ServersRepository;
+        private readonly IRepository<Sender> _SendersRepository;
+        private readonly IRepository<Recipient> _RecipientsRepository;
+        private readonly IRepository<Message> _MessagesRepository;
         private readonly IMailService _MailService;
         private readonly IStatistic _Statistic;
 
         public MainWindowViewModel(
-            ServersRepository ServersRepository,
+            IRepository<Server> ServersRepository,
+            IRepository<Sender> SendersRepository,
+            IRepository<Recipient> RecipientsRepository,
+            IRepository<Message> MessagesRepository,
             IMailService MailService,
             IStatistic Statistic)
         {
             _ServersRepository = ServersRepository;
+            _SendersRepository = SendersRepository;
+            _RecipientsRepository = RecipientsRepository;
+            _MessagesRepository = MessagesRepository;
             _MailService = MailService;
             _Statistic = Statistic;
         }
@@ -69,7 +79,7 @@ namespace MailSender.ViewModels
         public ICommand AddServerCommand => _AddServerCommand
             ??= new LambdaCommand(OnAddServerCommandExecuted);
 
-        private static void OnAddServerCommandExecuted(object _)
+        private void OnAddServerCommandExecuted(object _)
         {
             Servers.Add(new Server());
         }
@@ -79,16 +89,14 @@ namespace MailSender.ViewModels
         public ICommand RemoveServerCommand => _RemoveServerCommand
             ??= new LambdaCommand(OnRemoveServerCommandExecuted);
 
-        private static void OnRemoveServerCommandExecuted(object _)
+        private void OnRemoveServerCommandExecuted(object _)
         {
-             Servers.Remove(Server);
+             Servers.Remove(SelectedServer);
         }
 
         public static Server Server { get; set; }
 
-        public static ServersRepository Servers { get; } = new();
 
-        public static SendersRepository Senders { get; } = new();
 
         public static Sender Sender { get; set; }
 
@@ -97,7 +105,7 @@ namespace MailSender.ViewModels
         public ICommand AddSenderCommand => _AddSenderCommand
             ??= new LambdaCommand(OnAddSenderCommandExecuted);
 
-        private static void OnAddSenderCommandExecuted(object _)
+        private void OnAddSenderCommandExecuted(object _)
         {
             Senders.Add(new Sender());
         }
@@ -107,23 +115,27 @@ namespace MailSender.ViewModels
         public ICommand RemoveSenderCommand => _RemoveSenderCommand
             ??= new LambdaCommand(OnRemoveSenderCommandExecuted);
 
-        private static void OnRemoveSenderCommandExecuted(object _)
+        private void OnRemoveSenderCommandExecuted(object _)
         {
-            Senders.Remove(Sender);
+            Senders.Remove(SelectedSender);
         }
-
-        public static RecipientsRepository Recipients { get; } = new();
+      
 
         public static Recipient Recipient { get; set; }
 
         public Message Message { get; set; }
+
+        public Email Email
+        {
+            get; set;
+        }
 
         private ICommand _AddRecipientCommand;
 
         public ICommand AddRecipientCommand => _AddRecipientCommand
             ??= new LambdaCommand(OnAddRecipientCommandExecuted);
 
-        private static void OnAddRecipientCommandExecuted(object _)
+        private void OnAddRecipientCommandExecuted(object _)
         {
             Recipients.Add(new Recipient());
         }
@@ -133,12 +145,54 @@ namespace MailSender.ViewModels
         public ICommand RemoveRecipientCommand => _RemoveRecipientCommand
             ??= new LambdaCommand(OnRemoveRecipientCommandExecuted);
 
-        private static void OnRemoveRecipientCommandExecuted(object _)
+        private  void OnRemoveRecipientCommandExecuted(object _)
         {
-            Recipients.Remove(Recipient);
+            Recipients.Remove(SelectedRecipient);
+        }
+        public ObservableCollection<Server> Servers { get; } = new();
+        public ObservableCollection<Sender> Senders { get; } = new();
+        public ObservableCollection<Recipient> Recipients { get; } = new();
+        public ObservableCollection<Message> Messages { get; } = new();
+
+        private Recipient _SelectedRecipient;
+        public Recipient SelectedRecipient { get => _SelectedRecipient; set => Set(ref _SelectedRecipient, value); }
+
+        private Sender _SelectedSender;
+        public Sender SelectedSender { get => _SelectedSender; set => Set(ref _SelectedSender, value); }
+
+        private Server _SelectedServer;
+        public Server SelectedServer { get => _SelectedServer; set => Set(ref _SelectedServer, value); }
+
+        private Message _SelectedMessage;
+        public Message SelectedMessage { get => _SelectedMessage; set => Set(ref _SelectedMessage, value); }
+
+        #region Command LoadDataCommand - Загрузка данных
+
+        /// <summary>Загрузка данных</summary>
+        private LambdaCommand _LoadDataCommand;
+
+        /// <summary>Загрузка данных</summary>
+        public ICommand LoadDataCommand => _LoadDataCommand
+            ??= new(OnLoadDataCommandExecuted);
+
+        /// <summary>Логика выполнения - Загрузка данных</summary>
+        private void OnLoadDataCommandExecuted(object p)
+        {
+            Servers.Clear();
+            Senders.Clear();
+            Recipients.Clear();
+            Messages.Clear();
+
+            foreach (var item in _ServersRepository.GetAll()) Servers.Add(item);
+
+            foreach (var item in _RecipientsRepository.GetAll()) Recipients.Add(item);
+
+            foreach (var item in _SendersRepository.GetAll()) Senders.Add(item);
+
+            foreach (var item in _MessagesRepository.GetAll()) Messages.Add(item);
         }
 
-        public static MessagesRepository Messages { get; } = new();
+        #endregion
         #region Command SendMessageCommand - Отправка почты
 
         /// <summary>Отправка почты</summary>
@@ -151,7 +205,7 @@ namespace MailSender.ViewModels
         /// <summary>Логика выполнения - Отправка почты</summary>
         private void OnSendMessageCommandExecuted(object p)
         {
-            _MailService.SendEmail(Sender, Recipient, Message, Server);
+            _MailService.SendEmail(Email);
         }
 
         #endregion
