@@ -6,6 +6,7 @@ namespace MailSender.Interfaces
 {
     public interface IMailService
     {
+        public Email _email { get; set; }
         void SendEmail(Email _email)
         {
             if (_email==null || _email._message == null || _email._recipient == null||_email._server == null || _email._sender == null) return;

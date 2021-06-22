@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using MailSender.Commands;
@@ -6,6 +7,7 @@ using MailSender.Interfaces;
 using MailSender.Models;
 using MailSender.Services;
 using MailSender.ViewModels.Base;
+using MailSender.Views;
 
 namespace MailSender.ViewModels
 {
@@ -94,6 +96,27 @@ namespace MailSender.ViewModels
              Servers.Remove(SelectedServer);
         }
 
+        private ICommand _AddListViewCommand;
+
+        public ICommand AddListViewCommand => _AddListViewCommand
+            ??= new LambdaCommand(OnAddListViewCommandExecuted);
+
+        private void OnAddListViewCommandExecuted(object _)
+        {
+            ListViewItems.Add(new ListViewItem_Scheduler());
+        }
+
+        private ICommand _MailShedulerCommand;
+
+        public ICommand MailShedulerCommandCommand => _MailShedulerCommand
+            ??= new LambdaCommand(OnMailShedulerCommandExecuted);
+
+        private void OnMailShedulerCommandExecuted(object _)
+        {
+            foreach (var listItem in ListViewItems)
+                MailSchedulerService.DatesEmailTexts.Add(Convert.ToDateTime(listItem.tBox.Text), listItem.TextBoxText);
+        }
+        public ObservableCollection<ListViewItem_Scheduler> ListViewItems { get; } = new();
         public static Server Server { get; set; }
 
 

@@ -10,6 +10,8 @@ namespace MailSender.Services
 
         public DebugMailService(IStatistic Statistic) => _Statistic = Statistic;
 
+        public Email _email { get; set; }
+
         public void SendEmail(Email _email)
         {
             if (_email == null) return;

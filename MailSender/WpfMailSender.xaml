@@ -152,14 +152,14 @@
                             <Calendar/>
                             <TextBlock HorizontalAlignment="Center" Margin="0,5,0,0">Время отправки</TextBlock>
 
-                            <Button>
+                            <Button Command="{Binding AddListViewCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Height="12" Icon="Solid_PlusCircle"
                                                      Margin="0,0,3,0"
                                                      Foreground="Green"/>
                                     <TextBlock Text="Добавить Письмо"/>
                                 </StackPanel>  </Button>
-                                <ListView Height="50"></ListView>
+                            <ListView Height="60" ItemsSource="{Binding ListViewItems}"></ListView>
                             
                             <StackPanel Margin="5">
                                 <StackPanel.Resources>
