@@ -159,7 +159,21 @@
                                                      Foreground="Green"/>
                                     <TextBlock Text="Добавить Письмо"/>
                                 </StackPanel>  </Button>
-                            <ListView Height="60" ItemsSource="{Binding ListViewItems}"></ListView>
+                            <ListView Height="60" 
+                                      SelectedIndex="0"
+                                      SelectionMode="Single"
+                                      ItemsSource="{Binding ListViewItems}"
+                                      SelectedItem="{Binding SelectedListView}">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="IsSelected" Value="True"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
                             
                             <StackPanel Margin="5">
                                 <StackPanel.Resources>

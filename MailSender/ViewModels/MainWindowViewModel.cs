@@ -117,6 +117,18 @@ namespace MailSender.ViewModels
                 MailSchedulerService.DatesEmailTexts.Add(Convert.ToDateTime(listItem.tBox.Text), listItem.TextBoxText);
         }
         public ObservableCollection<ListViewItem_Scheduler> ListViewItems { get; } = new();
+
+        public ListViewItem_Scheduler SelectedListView { get; set; }
+
+        private ICommand _RemoveListViewCommand;
+
+        public ICommand RemoveListViewCommand => _RemoveListViewCommand
+            ??= new LambdaCommand(OnRemoveListViewCommandExecuted);
+
+        private void OnRemoveListViewCommandExecuted(object _)
+        {
+            ListViewItems.Remove(SelectedListView);
+        }
         public static Server Server { get; set; }
 
 
