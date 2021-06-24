@@ -10,9 +10,12 @@ namespace MailSender.Services
 
         public DebugMailService(IStatistic Statistic) => _Statistic = Statistic;
 
-        public void SendEmail(Sender _sender, Recipient _recipient, Message _message, Server _server)
+        public Email _email { get; set; }
+
+        public void SendEmail(Email _email)
         {
-            Debug.WriteLine($"Отправка почты от {_sender.Address} к {_recipient.Address}: {_message.Title} - {_message.Text}");
+            if (_email == null) return;
+            Debug.WriteLine($"Отправка почты от {_email._sender.Address} к {_email._recipient.Address}: {_email._message.Title} - {_email._message.Text}");
             _Statistic.MessageSended();
         }
     }
