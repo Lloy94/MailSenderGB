@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using MailSender.Commands;
@@ -13,6 +14,7 @@ namespace MailSender.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
+        private readonly IUserDialog _UserDialog;
         private readonly IRepository<Server> _ServersRepository;
         private readonly IRepository<Sender> _SendersRepository;
         private readonly IRepository<Recipient> _RecipientsRepository;
@@ -21,6 +23,7 @@ namespace MailSender.ViewModels
         private readonly IStatistic _Statistic;
 
         public MainWindowViewModel(
+            IUserDialog UserDialog,
             IRepository<Server> ServersRepository,
             IRepository<Sender> SendersRepository,
             IRepository<Recipient> RecipientsRepository,
@@ -28,6 +31,7 @@ namespace MailSender.ViewModels
             IMailService MailService,
             IStatistic Statistic)
         {
+            _UserDialog = UserDialog;
             _ServersRepository = ServersRepository;
             _SendersRepository = SendersRepository;
             _RecipientsRepository = RecipientsRepository;
@@ -83,7 +87,9 @@ namespace MailSender.ViewModels
 
         private void OnAddServerCommandExecuted(object _)
         {
-            Servers.Add(new Server());
+            var server = _UserDialog.AddServer();
+            if (server != null)
+                Servers.Add(server);
         }
 
         private ICommand _RemoveServerCommand;
@@ -94,6 +100,7 @@ namespace MailSender.ViewModels
         private void OnRemoveServerCommandExecuted(object _)
         {
              Servers.Remove(SelectedServer);
+           if(Servers.Count>0) SelectedServer = Servers.FirstOrDefault();
         }
 
         private ICommand _AddListViewCommand;
@@ -113,8 +120,8 @@ namespace MailSender.ViewModels
 
         private void OnMailShedulerCommandExecuted(object _)
         {
-            foreach (var listItem in ListViewItems)
-                MailSchedulerService.DatesEmailTexts.Add(Convert.ToDateTime(listItem.tBox.Text), listItem.TextBoxText);
+            //foreach (var listItem in ListViewItems)
+               // MailSchedulerService.DatesEmailTexts.Add(Convert.ToDateTime(listItem.tBox.Text), listItem.TextBoxText);
         }
         public ObservableCollection<ListViewItem_Scheduler> ListViewItems { get; } = new();
 
@@ -142,7 +149,9 @@ namespace MailSender.ViewModels
 
         private void OnAddSenderCommandExecuted(object _)
         {
-            Senders.Add(new Sender());
+            var sender = _UserDialog.AddSender();
+            if(sender!=null)
+                Senders.Add(sender);
         }
 
         private ICommand _RemoveSenderCommand;
@@ -153,6 +162,7 @@ namespace MailSender.ViewModels
         private void OnRemoveSenderCommandExecuted(object _)
         {
             Senders.Remove(SelectedSender);
+            if (Senders.Count>0 ) SelectedSender = Senders.FirstOrDefault();
         }
       
 
@@ -219,12 +229,16 @@ namespace MailSender.ViewModels
             Messages.Clear();
 
             foreach (var item in _ServersRepository.GetAll()) Servers.Add(item);
+            SelectedServer = Servers.FirstOrDefault();
 
             foreach (var item in _RecipientsRepository.GetAll()) Recipients.Add(item);
+            SelectedRecipient = Recipients.FirstOrDefault();
 
             foreach (var item in _SendersRepository.GetAll()) Senders.Add(item);
+            SelectedSender = Senders.FirstOrDefault();
 
             foreach (var item in _MessagesRepository.GetAll()) Messages.Add(item);
+            SelectedMessage = Messages.FirstOrDefault();
         }
 
         #endregion
@@ -240,7 +254,52 @@ namespace MailSender.ViewModels
         /// <summary>Логика выполнения - Отправка почты</summary>
         private void OnSendMessageCommandExecuted(object p)
         {
-            _MailService.SendEmail(Email);
+            var server = SelectedServer;
+            var mail_sender = _MailService.GetSender(server.Address, server.Port, server.UseSSL, server.Login, server.Password);
+
+            var sender = SelectedSender;
+            var recipient = SelectedRecipient;
+            var message = SelectedMessage;
+
+            mail_sender.Send(sender.Address, recipient.Address, message.Title, message.Text);
+        }
+
+        #endregion
+
+        #region Command EditServerCommand - Редактирование сервера
+
+        /// <summary>Редактирование сервера</summary>
+        private LambdaCommand _EditServerCommand;
+
+        /// <summary>Редактирование сервера</summary>
+        public ICommand EditServerCommand => _EditServerCommand
+            ??= new(OnEditServerCommandExecuted, p => p is Server);
+
+        /// <summary>Логика выполнения - Редактирование сервера</summary>
+        private void OnEditServerCommandExecuted(object p)
+        {
+            if (p is not Server server) return;
+            if (_UserDialog.EditServer(server))
+                _ServersRepository.Update(server);
+        }
+
+        #endregion
+
+        #region Command EditSenderCommand - Редактирование отправителя
+
+        /// <summary>Редактирование отправителя</summary>
+        private LambdaCommand _EditSenderCommand;
+
+        /// <summary>Редактирование отправителя</summary>
+        public ICommand EditSenderCommand => _EditSenderCommand
+            ??= new(OnEditSenderCommandExecuted, p => p is Sender);
+
+        /// <summary>Логика выполнения - Редактирование отправителя</summary>
+        private void OnEditSenderCommandExecuted(object p)
+        {
+            if (p is not Sender sender) return;
+            if (_UserDialog.EditSender(sender))
+                _SendersRepository.Update(sender);
         }
 
         #endregion
