@@ -146,7 +146,9 @@ namespace MailSender.ViewModels
 
         private void OnAddSenderCommandExecuted(object _)
         {
-            Senders.Add(new Sender());
+            var sender = _UserDialog.AddSender();
+            if(sender!=null)
+                Senders.Add(sender);
         }
 
         private ICommand _RemoveSenderCommand;

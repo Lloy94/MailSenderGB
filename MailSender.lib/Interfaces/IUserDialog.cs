@@ -7,5 +7,7 @@ namespace MailSender.Interfaces
         bool EditServer(Server server);
 
         bool EditSender(Sender sender);
+
+        Sender AddSender();
     } 
 }

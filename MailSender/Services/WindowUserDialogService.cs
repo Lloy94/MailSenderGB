@@ -83,5 +83,36 @@ namespace MailSender.Services
             sender.Description = model.Description;
             return true;
         }
+
+        public Sender AddSender()
+        {
+            var model = new SenderEditorDialogViewModel();
+
+            var sender = new Sender();
+            var view = new SenderEditorDialogWindow
+            {
+                DataContext = model
+            };
+
+            model.EditCompleted += (s, e) =>
+            {
+                view.DialogResult = true;
+                view.Close();
+            };
+
+            model.EditCanceled += (s, e) =>
+            {
+                view.DialogResult = false;
+                view.Close();
+            };
+
+            if (view.ShowDialog() != true)
+                return null;
+
+            sender.Name = model.Name;
+            sender.Address = model.Address;
+            sender.Description = model.Description;
+            return sender;
+        }
     }
 }
