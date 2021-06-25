@@ -41,7 +41,7 @@
                     <ToolBarTray Grid.Row="0">
                         <ToolBar>
                             <Label Content="Сервера" Margin="0,0,25,0"/>
-                            <ComboBox x:Name="cbServers" Width="120" SelectedIndex="0"
+                            <ComboBox x:Name="cbServers" Width="120"
                                       ItemsSource="{Binding Servers}"
                                       SelectedItem="{Binding SelectedServer}"
                                       DisplayMemberPath="Name" />
@@ -49,7 +49,9 @@
                                 Command="{Binding AddServerCommand}">
                                 <Image Height="20" Source="Media/add.png"/>
                             </Button>
-                            <Button ToolTip="Редактирование">
+                            <Button ToolTip="Редактирование"
+                                    Command="{Binding EditServerCommand}"
+                                    CommandParameter="{Binding SelectedServer}">
                                 <Image Height="20" Source="Media/edit.png"/>
                             </Button>
                             <Button Command="{Binding RemoveServerCommand}"
@@ -66,7 +68,7 @@
                         </ToolBar>
                         <ToolBar Band="1" BandIndex="0">
                             <Label Content="Отправители"/>
-                            <ComboBox Width="120" SelectedIndex="0" ItemsSource="{Binding Senders}"
+                            <ComboBox Width="120" ItemsSource="{Binding Senders}"
                                       SelectedItem="{Binding SelectedSender}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type model:Sender}">

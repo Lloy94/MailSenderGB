@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using MailSender.Commands;
@@ -13,6 +14,7 @@ namespace MailSender.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
+        private readonly IUserDialog _UserDialog;
         private readonly IRepository<Server> _ServersRepository;
         private readonly IRepository<Sender> _SendersRepository;
         private readonly IRepository<Recipient> _RecipientsRepository;
@@ -21,6 +23,7 @@ namespace MailSender.ViewModels
         private readonly IStatistic _Statistic;
 
         public MainWindowViewModel(
+            IUserDialog UserDialog,
             IRepository<Server> ServersRepository,
             IRepository<Sender> SendersRepository,
             IRepository<Recipient> RecipientsRepository,
@@ -28,6 +31,7 @@ namespace MailSender.ViewModels
             IMailService MailService,
             IStatistic Statistic)
         {
+            _UserDialog = UserDialog;
             _ServersRepository = ServersRepository;
             _SendersRepository = SendersRepository;
             _RecipientsRepository = RecipientsRepository;
@@ -219,12 +223,16 @@ namespace MailSender.ViewModels
             Messages.Clear();
 
             foreach (var item in _ServersRepository.GetAll()) Servers.Add(item);
+            SelectedServer = Servers.FirstOrDefault();
 
             foreach (var item in _RecipientsRepository.GetAll()) Recipients.Add(item);
+            SelectedRecipient = Recipients.FirstOrDefault();
 
             foreach (var item in _SendersRepository.GetAll()) Senders.Add(item);
+            SelectedSender = Senders.FirstOrDefault();
 
             foreach (var item in _MessagesRepository.GetAll()) Messages.Add(item);
+            SelectedMessage = Messages.FirstOrDefault();
         }
 
         #endregion
@@ -241,6 +249,25 @@ namespace MailSender.ViewModels
         private void OnSendMessageCommandExecuted(object p)
         {
             _MailService.SendEmail(Email);
+        }
+
+        #endregion
+
+        #region Command EditServerCommand - Редактирование сервера
+
+        /// <summary>Редактирование сервера</summary>
+        private LambdaCommand _EditServerCommand;
+
+        /// <summary>Редактирование сервера</summary>
+        public ICommand EditServerCommand => _EditServerCommand
+            ??= new(OnEditServerCommandExecuted, p => p is Server);
+
+        /// <summary>Логика выполнения - Редактирование сервера</summary>
+        private void OnEditServerCommandExecuted(object p)
+        {
+            if (p is not Server server) return;
+            if (_UserDialog.EditServer(server))
+                _ServersRepository.Update(server);
         }
 
         #endregion
