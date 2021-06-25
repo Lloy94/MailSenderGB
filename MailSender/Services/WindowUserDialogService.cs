@@ -114,5 +114,41 @@ namespace MailSender.Services
             sender.Description = model.Description;
             return sender;
         }
+
+        public Server AddServer()
+        {
+            var model = new ServerEditorDialogViewModel();
+
+            var view = new ServerEditorDialogWindow
+            {
+                DataContext = model
+            };
+
+            var server = new Server();
+
+            model.EditCompleted += (s, e) =>
+            {
+                view.DialogResult = true;
+                view.Close();
+            };
+
+            model.EditCanceled += (s, e) =>
+            {
+                view.DialogResult = false;
+                view.Close();
+            };
+
+            if (view.ShowDialog() != true)
+                return null;
+
+            server.Name = model.Name;
+            server.Address = model.Address;
+            server.Port = model.Port;
+            server.UseSSL = model.UseSSL;
+            server.Login = model.Login;
+            server.Password = model.Password;
+
+            return server;
+        }
     }
 }

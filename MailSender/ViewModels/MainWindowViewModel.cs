@@ -87,7 +87,9 @@ namespace MailSender.ViewModels
 
         private void OnAddServerCommandExecuted(object _)
         {
-            Servers.Add(new Server());
+            var server = _UserDialog.AddServer();
+            if (server != null)
+                Servers.Add(server);
         }
 
         private ICommand _RemoveServerCommand;
@@ -98,6 +100,7 @@ namespace MailSender.ViewModels
         private void OnRemoveServerCommandExecuted(object _)
         {
              Servers.Remove(SelectedServer);
+            SelectedServer = Servers.FirstOrDefault();
         }
 
         private ICommand _AddListViewCommand;
@@ -159,6 +162,7 @@ namespace MailSender.ViewModels
         private void OnRemoveSenderCommandExecuted(object _)
         {
             Senders.Remove(SelectedSender);
+            SelectedSender = Senders.FirstOrDefault();
         }
       
 
