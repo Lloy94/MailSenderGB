@@ -95,7 +95,9 @@
                             </Button>
                             <Button fa:Awesome.Content="Regular_Edit" 
                                     Foreground="DarkBlue"
-                                    ToolTip="Редактирование"/>
+                                    ToolTip="Редактирование"
+                                    Command="{Binding EditSenderCommand}"
+                                    CommandParameter="{Binding SelectedSender}"/>
                             <Button Command="{Binding RemoveSenderCommand}"
                                     CommandParameter="{Binding Path= SelectedSender}"
                                     fa:Awesome.Content="Solid_TrashAlt" 

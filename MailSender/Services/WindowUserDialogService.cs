@@ -48,5 +48,40 @@ namespace MailSender.Services
 
             return true;
         }
+
+        public bool EditSender(Sender sender)
+        {
+            var model = new SenderEditorDialogViewModel
+            {
+                Name = sender.Name,
+                Address = sender.Address,
+                Description = sender.Description
+            };
+
+            var view = new SenderEditorDialogWindow
+            {
+                DataContext = model
+            };
+
+            model.EditCompleted += (s, e) =>
+            {
+                view.DialogResult = true;
+                view.Close();
+            };
+
+            model.EditCanceled += (s, e) =>
+            {
+                view.DialogResult = false;
+                view.Close();
+            };
+
+            if (view.ShowDialog() != true)
+                return false;
+
+            sender.Name = model.Name;
+            sender.Address = model.Address;
+            sender.Description = model.Description;
+            return true;
+        }
     }
 }

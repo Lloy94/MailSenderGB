@@ -271,5 +271,24 @@ namespace MailSender.ViewModels
         }
 
         #endregion
+
+        #region Command EditSenderCommand - Редактирование отправителя
+
+        /// <summary>Редактирование отправителя</summary>
+        private LambdaCommand _EditSenderCommand;
+
+        /// <summary>Редактирование отправителя</summary>
+        public ICommand EditSenderCommand => _EditSenderCommand
+            ??= new(OnEditSenderCommandExecuted, p => p is Sender);
+
+        /// <summary>Логика выполнения - Редактирование отправителя</summary>
+        private void OnEditSenderCommandExecuted(object p)
+        {
+            if (p is not Sender sender) return;
+            if (_UserDialog.EditSender(sender))
+                _SendersRepository.Update(sender);
+        }
+
+        #endregion
     }
 }
