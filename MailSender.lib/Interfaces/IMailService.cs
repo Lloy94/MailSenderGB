@@ -1,42 +1,19 @@
-﻿using System.Collections.ObjectModel;
-using System.Net;
-using System.Net.Mail;
-using MailSender.Models;
+﻿using System.Collections.Generic;
+
 namespace MailSender.Interfaces
 {
     public interface IMailService
     {
-        public Email _email { get; set; }
-        void SendEmail(Email _email)
-        {
-            if (_email==null || _email._message == null || _email._recipient == null||_email._server == null || _email._sender == null) return;
-            using var message = new MailMessage(_email._sender.Address, _email._recipient.Address);
-            message.Subject = _email._message.Title;
-            message.Body = _email._message.Text;
-            using var client = new SmtpClient(_email._server.Address,_email._server.Port)
-            {
-                EnableSsl = _email._server.UseSSL,
-                Credentials = new NetworkCredential
-                {
-                    UserName = _email._server.Login,
-                    Password = _email._server.Password,
-                }
-            };
-            try
-            {
-                client.Send(message);
+        //void SendEmail(string From, string To, string Title, string Body);
+        IMailSender GetSender(string ServerAddress, int Port, bool UseSSL, string Login, string Password);
+    }
 
-            }
-            catch (SmtpException smtp_exception) { }
+    public interface IMailSender
+    {
+        void Send(string SenderAddress, string RecipientAddress, string Subject, string Body);
 
-        }
+        void Send(string SenderAddress, IEnumerable<string> RecipientsAddresses, string Subject, string Body);
 
-        void SendMails(ObservableCollection<Email> emails)
-        {
-            foreach (Email email in emails)
-            {
-                SendEmail(email);
-            }
-        }
+        void SendParallel(string SenderAddress, IEnumerable<string> RecipientsAddresses, string Subject, string Body);
     }
 }

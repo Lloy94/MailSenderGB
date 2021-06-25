@@ -120,8 +120,8 @@ namespace MailSender.ViewModels
 
         private void OnMailShedulerCommandExecuted(object _)
         {
-            foreach (var listItem in ListViewItems)
-                MailSchedulerService.DatesEmailTexts.Add(Convert.ToDateTime(listItem.tBox.Text), listItem.TextBoxText);
+            //foreach (var listItem in ListViewItems)
+               // MailSchedulerService.DatesEmailTexts.Add(Convert.ToDateTime(listItem.tBox.Text), listItem.TextBoxText);
         }
         public ObservableCollection<ListViewItem_Scheduler> ListViewItems { get; } = new();
 
@@ -254,7 +254,14 @@ namespace MailSender.ViewModels
         /// <summary>Логика выполнения - Отправка почты</summary>
         private void OnSendMessageCommandExecuted(object p)
         {
-            _MailService.SendEmail(Email);
+            var server = SelectedServer;
+            var mail_sender = _MailService.GetSender(server.Address, server.Port, server.UseSSL, server.Login, server.Password);
+
+            var sender = SelectedSender;
+            var recipient = SelectedRecipient;
+            var message = SelectedMessage;
+
+            mail_sender.Send(sender.Address, recipient.Address, message.Title, message.Text);
         }
 
         #endregion
