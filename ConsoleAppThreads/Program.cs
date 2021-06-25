@@ -23,7 +23,7 @@ namespace ConsoleAppThreads
             for (int i = 1; i <= n; i++)
             {
                 factorial *= i;
-                Console.WriteLine($"Вычисление факториала в первом потоке - {factorial}");
+                Console.WriteLine($"Вычисление факториала в первом потоке, факториал для числа {i} - {factorial}");
                 Thread.Sleep(50);
             }
 
