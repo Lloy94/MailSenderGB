@@ -55,7 +55,7 @@
                                 <Image Height="20" Source="Media/edit.png"/>
                             </Button>
                             <Button Command="{Binding RemoveServerCommand}"
-                                    CommandParameter="{Binding Path= SelectedServer}">
+                                    CommandParameter="{Binding SelectedServer}">
                                 <Button.ToolTip>
                                     <StackPanel>
                                         <TextBlock Text="Строка 1"/>
@@ -69,16 +69,9 @@
                         <ToolBar Band="1" BandIndex="0">
                             <Label Content="Отправители"/>
                             <ComboBox Width="120" ItemsSource="{Binding Senders}"
-                                      SelectedItem="{Binding SelectedSender}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type model:Sender}">
-                                        <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
-                                            <TextBlock Text="{Binding Name}" Margin="0,0,3,0"/>
-                                            <TextBlock Text="{Binding Address}" Opacity="0.5"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                                      SelectedItem="{Binding SelectedSender}"
+                                DisplayMemberPath="Address"/>
+
                             <Button Command="{Binding AddSenderCommand}">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Height="12" Icon="Solid_PlusCircle"
@@ -96,10 +89,11 @@
                             <Button fa:Awesome.Content="Regular_Edit" 
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"
+
                                     Command="{Binding EditSenderCommand}"
                                     CommandParameter="{Binding SelectedSender}"/>
                             <Button Command="{Binding RemoveSenderCommand}"
-                                    CommandParameter="{Binding Path= SelectedSender}"
+                                    CommandParameter="{Binding SelectedSender}"
                                     fa:Awesome.Content="Solid_TrashAlt" 
                                     Foreground="Red"
                                     ToolTip="Удаление"/>

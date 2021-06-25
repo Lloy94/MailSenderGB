@@ -100,7 +100,7 @@ namespace MailSender.ViewModels
         private void OnRemoveServerCommandExecuted(object _)
         {
              Servers.Remove(SelectedServer);
-            SelectedServer = Servers.FirstOrDefault();
+           if(Servers.Count>0) SelectedServer = Servers.FirstOrDefault();
         }
 
         private ICommand _AddListViewCommand;
@@ -162,7 +162,7 @@ namespace MailSender.ViewModels
         private void OnRemoveSenderCommandExecuted(object _)
         {
             Senders.Remove(SelectedSender);
-            SelectedSender = Senders.FirstOrDefault();
+            if (Senders.Count>0 ) SelectedSender = Senders.FirstOrDefault();
         }
       
 

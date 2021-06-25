@@ -23,5 +23,17 @@ namespace MailSender.Views
         {
             InitializeComponent();
         }
+
+        private void OnIdValidationError(object Sender, ValidationErrorEventArgs E)
+        {
+            if (E.Action == ValidationErrorEventAction.Added)
+            {
+                ((Control)E.OriginalSource).ToolTip = E.Error.ErrorContent.ToString();
+            }
+            else
+            {
+                ((Control)E.OriginalSource).ClearValue(ToolTipProperty);
+            }
+        }
     }
 }
