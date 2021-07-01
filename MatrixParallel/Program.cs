@@ -48,14 +48,16 @@ namespace MatrixParallel
         {
             int[,] matrix3 = new int[100, 100];
             var tasks = new List<Task>();
-            for (int i = 0; i < 99; i++)
+            for (int i = 0; i < 100; i++)
             {
-                for (int j = 0; j < 99; j++)
+                for (int j = 0; j < 100; j++)
                 {
+                    int n = i;
+                    int k = j;
                     tasks.Add(Task.Run(() =>
                     {
-                        matrix3[i, j] = MatrixMulti(matrix3, matrix1, matrix2, i, j, out int thread_id);
-                        Progress(matrix3[i, j], thread_id);
+                        matrix3[n, k] = MatrixMulti(matrix3, matrix1, matrix2, n, k, out int thread_id);
+                        Progress(matrix3[n,k], thread_id);
                     }));
                 }
             }
@@ -100,6 +102,5 @@ namespace MatrixParallel
             return matrix3;
         }
         */
-       1
     }
 }
