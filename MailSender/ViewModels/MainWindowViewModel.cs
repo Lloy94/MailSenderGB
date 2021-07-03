@@ -89,7 +89,7 @@ namespace MailSender.ViewModels
         {
             var server = _UserDialog.AddServer();
             if (server != null)
-                Servers.Add(server);
+                Servers.Add(server);           
         }
 
         private ICommand _RemoveServerCommand;
@@ -182,7 +182,22 @@ namespace MailSender.ViewModels
 
         private void OnAddRecipientCommandExecuted(object _)
         {
-            Recipients.Add(new Recipient());
+            var recipient = _UserDialog.AddRecipient();
+            if (recipient != null)
+                Recipients.Add(recipient);         
+        }
+
+        private ICommand _EditRecipientCommand;
+
+        public ICommand EditRecipientCommand => _EditRecipientCommand
+             ??= new LambdaCommand(OnEditRecipientCommandExecuted);
+
+
+        private void OnEditRecipientCommandExecuted(object p)
+        {
+            if (p is not Recipient recipient) return;
+            if (_UserDialog.EditRecipient(recipient))
+                _RecipientsRepository.Update(recipient);
         }
 
         private ICommand _RemoveRecipientCommand;
@@ -196,11 +211,12 @@ namespace MailSender.ViewModels
         }
         public ObservableCollection<Server> Servers { get; } = new();
         public ObservableCollection<Sender> Senders { get; } = new();
-        public ObservableCollection<Recipient> Recipients { get; } = new();
+        public ObservableCollection<Recipient> Recipients { get;} = new();
+
         public ObservableCollection<Message> Messages { get; } = new();
 
         private Recipient _SelectedRecipient;
-        public Recipient SelectedRecipient { get => _SelectedRecipient; set => Set(ref _SelectedRecipient, value); }
+        public Recipient SelectedRecipient { get => _SelectedRecipient; set => Set(ref _SelectedRecipient, value);  }
 
         private Sender _SelectedSender;
         public Sender SelectedSender { get => _SelectedSender; set => Set(ref _SelectedSender, value); }

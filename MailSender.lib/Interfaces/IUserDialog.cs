@@ -8,8 +8,12 @@ namespace MailSender.Interfaces
 
         bool EditSender(Sender sender);
 
+        bool EditRecipient(Recipient recipient);
+
         Sender AddSender();
 
         Server AddServer();
+
+        Recipient AddRecipient();
     } 
 }

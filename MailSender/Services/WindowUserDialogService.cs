@@ -60,6 +60,7 @@ namespace MailSender.Services
 
             var view = new SenderEditorDialogWindow
             {
+                Title = "Редактирование отправителя",
                 DataContext = model
             };
 
@@ -81,6 +82,42 @@ namespace MailSender.Services
             sender.Name = model.Name;
             sender.Address = model.Address;
             sender.Description = model.Description;
+            return true;
+        }
+
+        public bool EditRecipient(Recipient recipient)
+        {
+            var model = new SenderEditorDialogViewModel
+            {
+                Name = recipient.Name,
+                Address = recipient.Address,
+                Description = recipient.Description
+            };
+
+            var view = new SenderEditorDialogWindow
+            {
+                Title = "Редактирование получателя",
+                DataContext = model
+            };
+
+            model.EditCompleted += (s, e) =>
+            {
+                view.DialogResult = true;
+                view.Close();
+            };
+
+            model.EditCanceled += (s, e) =>
+            {
+                view.DialogResult = false;
+                view.Close();
+            };
+
+            if (view.ShowDialog() != true)
+                return false;
+
+            recipient.Name = model.Name;
+            recipient.Address = model.Address;
+            recipient.Description = model.Description;
             return true;
         }
 
@@ -149,6 +186,38 @@ namespace MailSender.Services
             server.Password = model.Password;
 
             return server;
+        }
+
+        public Recipient AddRecipient()
+        {
+            var model = new SenderEditorDialogViewModel();
+
+            var recipient = new Recipient();
+            var view = new SenderEditorDialogWindow
+            {
+                Title ="Добавление получателя",
+                DataContext = model
+            };
+
+            model.EditCompleted += (s, e) =>
+            {
+                view.DialogResult = true;
+                view.Close();
+            };
+
+            model.EditCanceled += (s, e) =>
+            {
+                view.DialogResult = false;
+                view.Close();
+            };
+
+            if (view.ShowDialog() != true)
+                return null;
+
+            recipient.Name = model.Name;
+            recipient.Address = model.Address;
+            recipient.Description = model.Description;
+            return recipient;
         }
     }
 }
