@@ -4,11 +4,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using MailSender.Commands;
+using MailSender.Data;
 using MailSender.Interfaces;
 using MailSender.Models;
 using MailSender.Services;
 using MailSender.ViewModels.Base;
 using MailSender.Views;
+using Microsoft.EntityFrameworkCore;
 
 namespace MailSender.ViewModels
 {
@@ -21,6 +23,7 @@ namespace MailSender.ViewModels
         private readonly IRepository<Message> _MessagesRepository;
         private readonly IMailService _MailService;
         private readonly IStatistic _Statistic;
+        private readonly MailSenderDB _mailSenderDb;
 
         public MainWindowViewModel(
             IUserDialog UserDialog,
@@ -29,7 +32,8 @@ namespace MailSender.ViewModels
             IRepository<Recipient> RecipientsRepository,
             IRepository<Message> MessagesRepository,
             IMailService MailService,
-            IStatistic Statistic)
+            IStatistic Statistic,
+            MailSenderDB mailSenderDB)
         {
             _UserDialog = UserDialog;
             _ServersRepository = ServersRepository;
@@ -38,8 +42,8 @@ namespace MailSender.ViewModels
             _MessagesRepository = MessagesRepository;
             _MailService = MailService;
             _Statistic = Statistic;
+            _mailSenderDb = mailSenderDB;
         }
-
         #region Title : string - Заголовок окна
 
         /// <summary>Заголовок окна</summary>
@@ -152,6 +156,8 @@ namespace MailSender.ViewModels
             var sender = _UserDialog.AddSender();
             if(sender!=null)
                 Senders.Add(sender);
+            _mailSenderDb.Senders.AddAsync(sender);
+            _mailSenderDb.SaveChanges();
         }
 
         private ICommand _RemoveSenderCommand;
