@@ -93,7 +93,9 @@ namespace MailSender.ViewModels
         {
             var server = _UserDialog.AddServer();
             if (server != null)
-                Servers.Add(server);           
+                Servers.Add(server);
+            _mailSenderDb.Servers.AddAsync(server);
+            _mailSenderDb.SaveChanges();
         }
 
         private ICommand _RemoveServerCommand;
@@ -103,8 +105,17 @@ namespace MailSender.ViewModels
 
         private void OnRemoveServerCommandExecuted(object _)
         {
-             Servers.Remove(SelectedServer);
-           if(Servers.Count>0) SelectedServer = Servers.FirstOrDefault();
+            if (Servers.Count > 0)
+            {
+                Server server = _mailSenderDb.Servers
+                    .Where(o => o.Id == SelectedServer.Id)
+                    .FirstOrDefault();
+                Servers.Remove(SelectedServer);
+
+                _mailSenderDb.Servers.Remove(server);
+                _mailSenderDb.SaveChanges();
+                if (Servers.Count > 0) SelectedServer = Servers.FirstOrDefault();
+            }
         }
 
         private ICommand _AddListViewCommand;
@@ -199,7 +210,9 @@ namespace MailSender.ViewModels
         {
             var recipient = _UserDialog.AddRecipient();
             if (recipient != null)
-                Recipients.Add(recipient);         
+                Recipients.Add(recipient);
+            _mailSenderDb.Recipients.AddAsync(Recipient);
+            _mailSenderDb.SaveChanges();
         }
 
         private ICommand _EditRecipientCommand;
@@ -211,8 +224,15 @@ namespace MailSender.ViewModels
         private void OnEditRecipientCommandExecuted(object p)
         {
             if (p is not Recipient recipient) return;
+            Recipient recipientTemp = _mailSenderDb.Recipients
+                .Where(s => s.Id == recipient.Id)
+                .FirstOrDefault();
             if (_UserDialog.EditRecipient(recipient))
+            {
                 _RecipientsRepository.Update(recipient);
+                _mailSenderDb.Recipients.Update(recipientTemp);
+                _mailSenderDb.SaveChanges();
+            }
         }
 
         private ICommand _RemoveRecipientCommand;
@@ -222,7 +242,16 @@ namespace MailSender.ViewModels
 
         private  void OnRemoveRecipientCommandExecuted(object _)
         {
-            Recipients.Remove(SelectedRecipient);
+            if (Recipients.Count > 0)
+            {
+                Recipient recipient = _mailSenderDb.Recipients
+                    .Where(o => o.Id == SelectedRecipient.Id)
+                    .FirstOrDefault();
+                Recipients.Remove(SelectedRecipient);
+
+                _mailSenderDb.Recipients.Remove(recipient);
+                _mailSenderDb.SaveChanges();               
+            }
         }
         public ObservableCollection<Server> Servers { get; } = new();
         public ObservableCollection<Sender> Senders { get; } = new();
@@ -310,8 +339,15 @@ namespace MailSender.ViewModels
         private void OnEditServerCommandExecuted(object p)
         {
             if (p is not Server server) return;
+            Server serverTemp = _mailSenderDb.Servers
+                .Where(s => s.Id == server.Id)
+                .FirstOrDefault();
             if (_UserDialog.EditServer(server))
+            {
                 _ServersRepository.Update(server);
+                _mailSenderDb.Servers.Update(serverTemp);
+                _mailSenderDb.SaveChanges();
+            }
         }
 
         #endregion
