@@ -167,8 +167,17 @@ namespace MailSender.ViewModels
 
         private void OnRemoveSenderCommandExecuted(object _)
         {
-            Senders.Remove(SelectedSender);
-            if (Senders.Count>0 ) SelectedSender = Senders.FirstOrDefault();
+            if (Senders.Count > 0)
+            {
+                Sender sender = _mailSenderDb.Senders
+                    .Where(o => o.Id == SelectedSender.Id)
+                    .FirstOrDefault();
+                Senders.Remove(SelectedSender);
+
+                _mailSenderDb.Senders.Remove(sender);
+                _mailSenderDb.SaveChanges();
+                if (Senders.Count > 0) SelectedSender = Senders.FirstOrDefault();
+            }
         }
       
 
@@ -256,7 +265,7 @@ namespace MailSender.ViewModels
             foreach (var item in _RecipientsRepository.GetAll()) Recipients.Add(item);
             SelectedRecipient = Recipients.FirstOrDefault();
 
-            foreach (var item in _SendersRepository.GetAll()) Senders.Add(item);
+            foreach (var item in _mailSenderDb.Senders) Senders.Add(item);
             SelectedSender = Senders.FirstOrDefault();
 
             foreach (var item in _MessagesRepository.GetAll()) Messages.Add(item);
@@ -320,8 +329,15 @@ namespace MailSender.ViewModels
         private void OnEditSenderCommandExecuted(object p)
         {
             if (p is not Sender sender) return;
+            Sender senderTemp = _mailSenderDb.Senders
+                .Where(s => s.Id == sender.Id)
+                .FirstOrDefault();
             if (_UserDialog.EditSender(sender))
+            {
                 _SendersRepository.Update(sender);
+                _mailSenderDb.Senders.Update(senderTemp);
+                _mailSenderDb.SaveChanges();
+            }
         }
 
         #endregion
