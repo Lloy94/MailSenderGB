@@ -259,18 +259,16 @@ namespace MailSender.ViewModels
             Recipients.Clear();
             Messages.Clear();
 
-            foreach (var item in _ServersRepository.GetAll()){ _mailSenderDb.Servers.AddAsync(item); _mailSenderDb.SaveChanges();
-        }
-        SelectedServer = Servers.FirstOrDefault();
+            foreach (var item in _mailSenderDb.Servers) Servers.Add(item);
+            SelectedServer = Servers.FirstOrDefault();
 
-            foreach (var item in _RecipientsRepository.GetAll()) {_mailSenderDb.Recipients.AddAsync(item); _mailSenderDb.SaveChanges();
-        }
-        SelectedRecipient = Recipients.FirstOrDefault();
+            foreach (var item in _mailSenderDb.Recipients) Recipients.Add(item);
+            SelectedRecipient = Recipients.FirstOrDefault();
 
-            foreach (var item in _SendersRepository.GetAll()) { _mailSenderDb.Senders.AddAsync(item);_mailSenderDb.SaveChanges(); }
+            foreach (var item in _mailSenderDb.Senders) Senders.Add(item);
             SelectedSender = Senders.FirstOrDefault();
 
-            foreach (var item in _MessagesRepository.GetAll()) { _mailSenderDb.Messages.AddAsync(item); _mailSenderDb.SaveChanges(); }
+            foreach (var item in _mailSenderDb.Messages) Messages.Add(item);
             SelectedMessage = Messages.FirstOrDefault();
         }
 
