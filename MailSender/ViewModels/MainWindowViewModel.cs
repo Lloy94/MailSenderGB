@@ -17,10 +17,6 @@ namespace MailSender.ViewModels
     public class MainWindowViewModel : ViewModel
     {
         private readonly IUserDialog _UserDialog;
-        private readonly IRepository<Server> _ServersRepository;
-        private readonly IRepository<Sender> _SendersRepository;
-        private readonly IRepository<Recipient> _RecipientsRepository;
-        private readonly IRepository<Message> _MessagesRepository;
         private readonly IMailService _MailService;
         private readonly IStatistic _Statistic;
         private readonly MailSenderDB _mailSenderDb;
@@ -36,10 +32,6 @@ namespace MailSender.ViewModels
             MailSenderDB mailSenderDB)
         {
             _UserDialog = UserDialog;
-            _ServersRepository = ServersRepository;
-            _SendersRepository = SendersRepository;
-            _RecipientsRepository = RecipientsRepository;
-            _MessagesRepository = MessagesRepository;
             _MailService = MailService;
             _Statistic = Statistic;
             _mailSenderDb = mailSenderDB;
@@ -229,7 +221,6 @@ namespace MailSender.ViewModels
                 .FirstOrDefault();
             if (_UserDialog.EditRecipient(recipient))
             {
-                _RecipientsRepository.Update(recipient);
                 _mailSenderDb.Recipients.Update(recipientTemp);
                 _mailSenderDb.SaveChanges();
             }
@@ -344,7 +335,6 @@ namespace MailSender.ViewModels
                 .FirstOrDefault();
             if (_UserDialog.EditServer(server))
             {
-                _ServersRepository.Update(server);
                 _mailSenderDb.Servers.Update(serverTemp);
                 _mailSenderDb.SaveChanges();
             }
@@ -370,7 +360,6 @@ namespace MailSender.ViewModels
                 .FirstOrDefault();
             if (_UserDialog.EditSender(sender))
             {
-                _SendersRepository.Update(sender);
                 _mailSenderDb.Senders.Update(senderTemp);
                 _mailSenderDb.SaveChanges();
             }
