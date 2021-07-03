@@ -111,7 +111,9 @@
                                     <TextBlock Text="Добавить"/>
                                 </StackPanel>
                             </Button>
-                            <Button fa:Awesome.Content="Regular_Edit" 
+                            <Button Command="{Binding EditRecipientCommand}"
+                                    CommandParameter="{Binding Path= SelectedRecipient}"
+                                    fa:Awesome.Content="Regular_Edit" 
                                     Foreground="DarkBlue"
                                     ToolTip="Редактирование"/>
                             <Button Command="{Binding RemoveRecipientCommand}"
@@ -121,20 +123,23 @@
                                     ToolTip="Удаление"/>
                         </ToolBar>
                     </ToolBarTray>
-                    <DataGrid Grid.Row="1" AutoGenerateColumns="False"
-                              ItemsSource="{Binding Recipients}"
+                    <DataGrid Grid.Row="1" AutoGenerateColumns="False"                             
+                              ItemsSource="{Binding Recipients}"                              
                               SelectedItem="{Binding SelectedRecipient}"
+                              IsReadOnly="True"
                               GridLinesVisibility="Vertical"
                               VerticalGridLinesBrush="Gray"
                               AlternatingRowBackground="#4C87CEAB"
                               CanUserAddRows="False"
                               HeadersVisibility="Column">
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" MinWidth="40" MaxWidth="80" Binding="{Binding Id}"/>
                             <DataGridTextColumn Header="Имя" Width="*" MinWidth="150" Binding="{Binding Name}"/>
                             <DataGridTextColumn Header="Адрес" MinWidth="140" Binding="{Binding Address}"/>
                             <DataGridTextColumn Header="Описание" MinWidth="120" Binding="{Binding Description}"/>
                         </DataGrid.Columns>
+
                     </DataGrid>
                 </Grid>
             </TabItem>
